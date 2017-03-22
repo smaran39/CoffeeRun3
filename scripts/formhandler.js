@@ -47,20 +47,42 @@
 
     //Silver challenge starts here
     FormHandler.prototype.decafInputHandler = function(fn) {
-        $('#strengthLevel').on('change', function(event) {
-            var strength = $('#strengthLevel').val();
-            var coffeeOrder = $('#coffeeOrder').val();
-            var message = '';
-
-            if (fn(coffeeOrder, strength)) {
-
+        var message = 'Decaf must have Caffeine level under 20';
+        var coffee;
+        //console.log('outside anynmns '+this);
+        this.$formElement.on('input', '[name="coffee"]', function(event) {
+            coffee = event.target;
+            //console.log('inside anynsmn '+this);
+            var data = {};
+            this.$formElement.serializeArray().forEach(function(item) {
+                if (item.name === 'coffee' || item.name === 'strength') {
+                    data[item.name] = item.value;
+                }
+            });
+            if (fn(data.coffee, data.strength)) {
                 event.target.setCustomValidity('');
             } else {
-                message = 'Caffeine strength should be less than 20 for Decaf!';
                 event.target.setCustomValidity(message);
             }
-        });
+        }.bind(this));
+        this.$formElement.on('change', '[name="strength"]', function(event) {
+            var data = {};
+            this.$formElement.serializeArray().forEach(function(item) {
+                if (item.name === 'coffee' || item.name === 'strength') {
+                    data[item.name] = item.value;
+                }
+            });
+            if (fn(data.coffee, data.strength)) {
 
+                if (coffee) {
+
+                    coffee.setCustomValidity('');
+                }
+                event.target.setCustomValidity('');
+            } else {
+                event.target.setCustomValidity(message);
+            }
+        }.bind(this));
     };
 
     //silver challenge ends here
