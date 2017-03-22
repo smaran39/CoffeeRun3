@@ -45,6 +45,25 @@
         });
     };
 
+    //Silver challenge starts here
+    FormHandler.prototype.decafInputHandler = function(fn) {
+        $('#strengthLevel').on('change', function(event) {
+            var strength = $('#strengthLevel').val();
+            var coffeeOrder = $('#coffeeOrder').val();
+            var message = '';
+
+            if (fn(coffeeOrder, strength)) {
+
+                event.target.setCustomValidity('');
+            } else {
+                message = 'Caffeine strength should be less than 20 for Decaf!';
+                event.target.setCustomValidity(message);
+            }
+        });
+
+    };
+
+    //silver challenge ends here
     App.FormHandler = FormHandler;
     window.App = App;
 })(window);
